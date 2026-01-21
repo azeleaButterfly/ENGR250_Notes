@@ -1,21 +1,26 @@
 \documentclass{article}
+\usepackage{amsmath, amsfonts, amssymb}
+\usepackage{venndiagram} 
 \usepackage[margin=1in]{geometry}
-\usepackage{amsmath, amsfonts, amssymb,venndiagram}
+\usepackage{qtree}
 \usepackage{hyperref}
 \hypersetup{
     colorlinks=false,
     linktoc=all,
 }
-    
-\title{University of the Pacific ECPE 127 Notes}
-\author{}
+\usepackage{mathtools}
 
+\newcommand\Myperm[2][^n]{\prescript{#1\mkern-2.5mu}{}P_{#2}}
+\newcommand\Mycomb[2][^n]{\prescript{#1\mkern-0.5mu}{}C_{#2}}
+
+\title{University of the Pacific ENGR 250 Notes}
+\author{Mari Anderson}   
 \begin{document}
 \maketitle
 \tableofcontents
 \newpage
-\section{Unit 1 - Probability Theory}
-\subsection{Introduction to Set Theory}
+\section{Week 1}
+\subsection{Set Theory}
 A \textbf{set} is a collection of things. For example: 
 \begin{itemize}
     \item Collection of all natural numbers $\mathbb{N} = \{1,2,3,4,5,...\}$
@@ -144,4 +149,81 @@ P(A) = \frac{|A|}{|S|}
 \]
 Where $||$ denotes the cardinality of the set.
 \subsection{Conditional Probability}
-\end{document}
+The \textbf{conditional probability} of the event $A$ given the occurance occurance of the event $B$ is 
+\[
+P(A | B) = \frac{P(A \cap B)}{B}
+\]
+\subsection{Law of Total Probability}
+\textbf{Theorem 1.10: } For an event space $\{B_1, B_2, \dots, B_m\}$ with $P(B_i) > 0$ for all $i$
+\[
+P(A) = \sum_{i=1}^{m} P(A | B_i)P(B_i)
+\]
+\newpage
+\section{Week 2}
+\subsection{Problem 2.4} You have two biased coins. Coin A comes up with heads with probability 0.25. Coin B comes up heads with probability 0.75. However you are not sure which is which so you choose a coin randomly and you flip it. If the flip is heads you guess Coin B. If tails you guess Coin A. What is the probability $P(C)$ that your guess is correct.
+\begin{center}
+\Tree[. [.CoinA(0.5) [.Heads(0.25) [.Wrong \textit{1/8} ] ]
+               [.Tails(0.75) [.Correct \textit{3/8} ]]]
+          [.CoinB(0.5) [.Heads(0.75) [.Correct \textit{3/8} ]]
+                [.Tails(0.25) [.Wrong \textit{1/8} ]]]
+                ]
+\end{center}
+\subsection{Problem 2.5:} 
+Traffic enginers have coordinated the timing of two traffic lights to encourage the run of green lights. With probability of $0.8$ a driver will find the 2nd light to have the same color as the first. Assuming that the first light is equally likely to be red or green:
+\begin{center}
+\Tree[.
+        [.Green(0.5)
+            [.Green(0.8) \textit{0.4} ]
+            [.Red(0.2) \textit {0.1} ]] 
+            [.Red(0.5) 
+                [.Green(0.2) \textit{0.1} ]
+                [.Red(0.8) \textit{0.4} ]]
+]
+\end{center}
+Part A: What is the probability $P(G2)$ that the second light is green? 
+\[
+P(G2) = P(G2 \cap G1) + P(G2 \cap R1) = 0.4 + 0.1 = 0.5
+\]
+Part B: What is the probability $P(W)$ that you wait for at least one of the first two lights:
+\[
+P(W) = P(R2 \cap G1) + P(R1) = 0.1 + 0.5 = 0.6
+\]
+Part C: What is $P(G1| R2)$. 
+\[
+P(G1 | R2) = \frac{P(G1 \cap R2)}{P(R2)} = 0.1/0.5 = 0.2
+\]
+\subsection{Problem 2.6:} 
+You have a shuffled deck of cards labeled 2 to 12. You also have two fair dice. You toss a baised coin (heads with probability 0.75). If the result isheads then you draw a card from the shuffled deck of cards. Otherwise, you roll two dice and add the numbers. What's the probability that you get a 7 or 8.
+\begin{center}
+\Tree[.
+        [.Heads(3/4) [{Draw 7 or 8 (2/11)} ]
+            {Don't draw 7 or 8 (9/11)} ]
+            [.Tails(1/4) {Roll 7 or 8 (11/36)}
+                {Don't roll 7 or 8 (25/36)} ]
+]
+\[
+P(7/8) = P(H \cap (7/8)) + P(T \cap (7/8)) = \bigg(\frac{3}{4}\bigg)\bigg(\frac{2}{11}\bigg) + \bigg(\frac{1}{4}\bigg)\bigg(\frac{11}{36}\bigg) = \frac{6}{44} + \frac{11}{144} = 0.213
+\]
+\end{center}
+\subsection{Counting Principles}
+\subsubsection{Counting Principle 1}
+An experiment consists of two subexperiments. If one subexperiment hsa $k$ outcomes and the other subexperiment has $n$ outcomes, the the experiment has $nk$ outcomes.
+\subsubsection{Counting Principle 2}
+A sampling without replacement technique where you pick $k$ objects out of $n$ distinguishable bjects such that the order of picking does matter.
+\[
+P(n,k) = \Myperm[n]{k} = \frac{n!}{(n-k)!}
+\]
+\subsubsection{Counting Principle 3}
+When you pick $k$ objects from $n$ objections, each way contains $k$ objects that can be permuted $k!$ ways. The number of ways to \textbf{choose} $k$ objects out of $n$ distinguishable objects is:
+\[
+\binom{n}{k} = \frac{n!}{(n-k)!k!}
+\]
+\subsection{Problem 2.7}
+In a game of yummy you are dealt a seven card hand.
+\subsubsection{Part A}
+\textbf{Q:} what is the probability $P(R_7)$ that your hand only has red cards.
+\[
+P(R_7) = \frac{\binom{26}{7}}{\binom{52}{7}} = \frac{26!}{(26 - 7)!7!} \cdot \frac{(52-7)!7!}{52!} = \frac{26!45!}{19!52!} = 0.00492
+\]
+\end{document}!
+
