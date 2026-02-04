@@ -1,7 +1,8 @@
 \documentclass{article}
 \usepackage{amsmath, amsfonts, amssymb}
-\usepackage{venndiagram} 
-\usepackage[margin=1in]{geometry}
+\usepackage{graphicx}
+\usepackage{venndiagram, pgfplots} 
+\usepackage[margin=0.90in]{geometry}
 \usepackage{qtree}
 \usepackage{hyperref}
 \hypersetup{
@@ -9,7 +10,7 @@
     linktoc=all,
 }
 \usepackage{mathtools}
-
+\pgfplotsset{compat=1.18}
 \newcommand\Myperm[2][^n]{\prescript{#1\mkern-2.5mu}{}P_{#2}}
 \newcommand\Mycomb[2][^n]{\prescript{#1\mkern-0.5mu}{}C_{#2}}
 
@@ -128,7 +129,7 @@ Visual Explaination:
 \end{venndiagram2sets}
 
 
-Here we see the intersection of $A$ and $B$ could be counted twice if we add $P(A)$ and $P(B)$ so we have to subtract the intersection so it is only counted once. \newline
+Here we see the intersection of $A$ and $B$ could be counted twice if we add $P(A)$ and $P(B)$ so we have to subtract the intersection so it is only counted once.
 \subsubsection{Theorem 1.5}
 The probability of event $B =  \{s_1, s_2, \dots s_m\}$ is the sum of probabilities contained in the event:
 \[
@@ -357,5 +358,263 @@ P(6H,8L,2Z) = \binom{16}{6,8,2} = \frac{16!}{6!8!2!}
 \section{Week 3}
 \subsection{Discrete Random Variables}
 
+\newpage
+\section{Week 4}
+\subsection{Problem 4.6}
+\textbf{Q.} A radio station gives a pair of concert tickets to the sixth $(k^{th})$ caller who knwos the birthday of the performer. For each person who calls the probability $p = 0.75$ of knowing the performer's birthday. All calls are independent. 
+\subsubsection{part a}
+\textbf{Q.} What is the \textbf{PMF of $L$}, the number of calls necessary to find the winner?
+\[
+    P_L(\ell) = \binom{L-1}{k-1}p^k(1-p)^{L-k}, \hspace{5mm} L \leq k
+\]
 
+\subsubsection{part b}
+\textbf{Q:} What is the probability of calling the winner on the tenth call?  \newline
+\textbf{Solution:} 
+\[
+    P(L = 10) = \bigg( \binom{9}{5} p^5(1-p)^4 \bigg) p = \binom{9}{5} p^6(1-p)^4 = \binom{9}{5} (0.75)^6(0.25)^4
+\]
+
+\subsubsection{part c}
+\textbf{Q:} What is the probability that the station will need nine or more calls to find a winner? \newline
+\textbf{Solution:}
+\[
+P( L \geq 9) = 1 - P(L < 9) = 1 - \bigg( P(L = 6) + P(L=7) + P(L=8) \bigg)
+\]
+\[
+    1 - \bigg( P(L=6) + P(L=7) + P(L=8) \bigg) = 1 - \bigg( (0.75)^6 + \binom{6}{5} (0.75)^6(0.25) + \binom{7}{5}(0.75)^6(0.25)^2  \bigg) =  
+\]
+\subsection{Pascal Random Variable}
+Consider an experimentwhere you perform $L$ Bernouli trials until you obtain $k$ of the desired result. $L$ is a Pascal Random Variable whose PMF takes the Formal
+\[
+P(X = x) = P_X(x) = 
+\]
+
+\subsection{Discrete Uniform Random Variable}
+X is a discrete uniform random variable if the PMF of $X$ has the form:
+\[
+    P(X = x) = P_X(x) = = \frac{1}{l-k+1} , \hspace{5mm} k \leq x \leq l 
+\]
+Otherwise
+\[
+    P(X = x) = P_X(x) = 0
+\]
+
+\subsection{Possion Random Variable}
+$X$ is Poisson $(\alpha)$ random vairable if the PMF of $X$ has the form:
+\[
+    P(X = x) = P_X(x) = \frac{\alpha^x e^{-\alpha}}{x!}, \hspace{3mm}x \in \mathbb{N}, \hspace{3mm} \alpha > 0
+\]
+Otherwise $P(X = x) = 0$
+Given the rate of arrival $\lambda$ and the time interval $T$, $\alpha = \lambda T$.
+
+\subsection{Problem 4.9}
+\textbf{Q:} The number of packets at a router in any time interval is a Possion random vairable. A particular router gets 2 packets per second. 
+\subsubsection{Part A}
+\textbf{Q:} What is the probability there are no packets in an interval of 0.25 seconds. \newline
+\textbf{Solution:} Let $x$ be the number of arrivals. We then get $\alpha = 2\times0.25 = 0.5$ as there are 2 packets over 1 second, and we are curious about how many packets arrive in 0.25 seconds. Applying this to the PMF of a Poisson RV 
+\[
+    P(X = 0) =  \frac{(0.5)^0(e^{-0.5})}{0!} = e^{-0.5}
+\]
+\subsubsection{Part B}
+\textbf{Q:} What is the probability that there are no more than two packets in an interval of two seconds \newline
+\textbf{Solution:} Let $x$ be the number of arrivals. Then we get that $\alpha = (2)(2) = 4$. Which then gives us the poisson PMF
+\[
+    P(X = x) = \frac{4^x e^{-4}} {x!}
+\]
+Then we can get that $P$ of no more than two is equal to 
+\[
+    P(X \geq 2) = P(X = 0) + P(X = 1) + P(X = 2) = e^{-4} + 4e^{-4} + 8e^{-4} = 13e^{-4}
+\]
+\subsection{General Advice}
+For a given problem:
+\begin{itemize}
+    \item Deriving the PMF first without any assumptions is always good
+    \item Does the experiment consist of multiple Bernoulli trials?
+    \item If \textbf{YES}
+        \begin{itemize}
+    \item $N$ trials until and up to first desired out come $N$ is geometric RV $(p)$
+    \item $n$ trials and youre looking for $X$ desired outcomes? $X$ is binomial $(n,p)$
+    \item $L$ trials until and up to $k$ observations of desired outcomes? $L$ is Pascal $(k,p)$
+\end{itemize}
+    \item If \textbf{NO}
+        \begin{itemize}
+    \item Single experiment and multiple likely outocmes? Uniform
+    \item Relates to rate of arrivals and occurence? Poisson 
+    \item Some other PMF
+\end{itemize}
+\end{itemize}
+
+\subsection{Cumulative Distribution Function} The CDF of a random variable $X$ is 
+\[
+F_X(x) = P(X \leq x) 
+\]
+The CDF of a random variable $X$ is the probability that $X$ is less than or equal to $x$
+\subsection{Problem 5.1}
+\textbf{Problem:} You roll a six sided die. Let $X$ be the random variable denoting the number of dots that appear. Find $F_X(x)$ and plot it.
+\[
+    F_X=x = x/6, \hspace{3mm} 1 \leq x \leq 6 \hspace{3mm}, \text{0 otherwise}
+\]
+\begin{center}
+\begin{tikzpicture}
+    \begin{axis}
+        \addplot+[only marks,
+            scatter]
+            table[meta=FxX]
+            {./Data/diceCDF.dat};
+    
+
+    \end{axis}
+
+\end{tikzpicture}
+\end{center}
+\subsection{Expected Value and Variance}
+\[
+    E(X) = \sum_{x \in S_x} xP(x)
+\]
+\[
+    E(X^2) = \sum_{x \in S_x} x^2P(x)
+\]
+
+\[
+Var (X) = E(X - E(X)^2) = E(X^2) - E(X)^2 
+\]
+\[
+    s = \sqrt{Var(X)}
+\]
+\subsection{Continuous Random Variables}
+\subsubsection{Discrete Wheel Example}
+Assume you have a wheel with a pointer that can only move in 90 degree increments. $\theta_m = 90$ and $S_\theta = \{90,180,270,360\}$. With $P(\theta_i) = 1/4$, draw the cdf. (Imagine a staircase plot here) 
+\begin{center}
+\begin{tikzpicture}
+    \begin{axis}
+        \addplot+[only marks,
+            ]
+            table[meta=P]
+            {./Data/DiscreteWheel.dat};
+
+    \end{axis}
+
+\end{tikzpicture}
+\end{center}
+\subsubsection{Moving to continuous}
+When $\theta_m$ gets infinitismally small, $\theta$ takes on a continum of values and becomes continuous.
+
+\subsubsection{Definition}
+When a random variable $X$ takes on a continoum of real values, $X$ is a continuous random variable with a continuous random variable with a continuous CDF. CDF of $X$ is continuous for a continuous random variable $X$.
+\[
+    \text{CDF:} \hspace{3mm} F_X(x) = P(X \leq x)
+\]
+Continuous CDF follows the rules:  
+\begin{itemize}
+    \item $F_X(-\infty) = 0$
+    \item $F_X(\infty) = 1$
+    \item $P(x_1 \leq X \leq x_2) = F_X(x_2) - F_X(x_1)$
+    \item $P(X = x) = 0$. 
+\end{itemize}
+
+\subsection{Probability Density Function}
+\[
+p_1 = P(x_1 < X < x_1 + \Delta) = F_X(x_1 + \Delta) - F_X(x_1)
+\]
+\[
+    p_1 = P(x_1 < X < x_1 + \Delta) = \frac{\Delta(F_X(x_1 + \Delta) - F_X(x_1))}{\Delta}
+\]
+\[
+    p_1 = P(\text{``X is near } x_1 \text{"} ) f_x(x_1)
+\]
+\[
+f_X(x) = \frac{dF_X(x)}{dx}
+\]
+
+\subsection{PDF Therorems}
+\[
+    f_X(x) \geq 0, \hspace{3mm} \forall x
+\]
+\[
+    F_X(x) = \int_{-\infty}{x} f_x(u)du
+\]
+\[
+    \int_{-\infty}^{\infty} f_X(x)dx = 1
+\]
+\subsection{Notable Concept}
+\[
+    P(x_1 \leq X \leq x_2) = \int_{x_1}^{x_2} f_X(x)dx
+\]
+We want to know that $X$ is in a range of values
+\subsection{Problem 7.1} 
+The CDF of a random variable $Y$ is 
+\[
+    F_Y(y) = \begin{cases}
+        0, & y< 0 \\
+        y^3, & 0 \leq y \leq 1 \\
+        1, & y > 1
+    \end{cases}
+\]
+PDF of $Y$ would be 
+\[
+    f_Y(y) = \begin{cases} 
+        0, & y < 0 \\
+        3y^2 & 0 \leq y \leq 1 \\
+        0 & y > 1
+    \end{cases}
+\]
+\includegraphics[scale=0.5]{./Data/example71.png} \newline
+Then $P(1/4 < Y \leq 3/4)$ would be equal to 
+\[
+    \int_{1/4}^{3/4} 3y^2 dy = \bigg(\frac{3}{4} \bigg)^3 - \bigg(\frac{1}{4} \bigg)^3 = \frac{26}{64} = \frac{13}{32}
+\]
+\subsection{Problem 7.2} 
+For a constant parameter $a > 0$ a Rayleigh random variable has the PDF $F_X(x) = a^2xe^{(-a^2x^2)/2}$ for $x > 0$. What is the CDF of $X$.
+\[
+\int_{0}^{x} a^2xe^{-a^2x^2/2} 
+\]
+Using the substitution $u = a^2x^2$ we then get the integral
+\[
+    \int e^{-u/2}du = -e^{-u/2}
+\]
+Reverting the substitution
+\[
+    e^{-u/2} = e^{-a^2x^2/2} 
+\]
+Then applying the limits of integration gets us our CDF. 
+\[
+    F_X(x) = e^{0} - e^{-a^2x^2/2} = 1 - e^{-a^2x^2/2} , \hspace{3mm} x \geq 0 
+\]
+
+\subsection{Expected Value of Continuous Random Variables}
+\[
+    E(X) = \int_{-\infty}^{\infty} xf_X(x)dx
+\]
+The same theorems for Expected value apply :) 
+\begin{itemize} 
+    \item $E(X - \mu x) = 0$
+    \item $E(aX + b) = aE(X) + b)$
+    \item $Var(X) = E[(X - \mu X)^2] = E(X^2) - E(X)^2 $
+    \item $E(X^2) = \int_{-\infty}^{\infty} x^2f_X(x)dx$
+    \item $E[(X - \mu x)^2] = \int_{-\infty}^{\infty} (x - \mu x)^2 f_X(x) dx$
+\end{itemize}
+\subsection{Problem 7.3}
+The PDF of a random variable $Y$ is 
+\[
+    f_Y(y) = \begin{cases} 
+        \frac{3y^2}{2} & -1 \leq y \leq 1 \\
+        0 & \text{otherwise} \\
+    \end{cases}
+\]
+\subsubsection{Expected Value of Y}
+\[
+    E(Y) = \int_{-1}^{1} yf_Y(y) = \int_{-1}^{1} \frac{3y^3}{2} = \frac{3}{8}y^4 \bigg|^{1}_{-1} = 0
+\]
+\subsubsection{Second Moment of Y}
+\[
+    E(Y^2) = \int_{-1}^{1} y^2f_Y(y) = \int_{-1}^{1} \frac{3y^4}{2} = \frac{3}{10}y^5 \bigg|^{1}_{-1} = \frac{6}{10} = 0.6
+\]
+\[
+    s = \sqrt{Var(Y)} =  \sqrt{E(X^2) - E(X)^2} = \sqrt{0.6} \approx 0.775
+\]
+\newpage
+
+\section{Week 5}
+meow
 \end{document}
